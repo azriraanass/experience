@@ -1,0 +1,9 @@
+import { DataSource } from 'typeorm';
+import { typeOrmConfig } from './database/config/typeorm.config';
+
+
+export default new DataSource(
+  {
+    ...typeOrmConfig(),
+    migrations: [__dirname + '/database/migrations/*.ts'],
+  });
