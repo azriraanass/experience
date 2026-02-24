@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { typeOrmConfig } from './database/config/typeorm.config';
+import { typeOrmConfig } from './typeorm.config';
 
 
 export default new DataSource(

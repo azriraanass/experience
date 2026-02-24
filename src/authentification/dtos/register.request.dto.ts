@@ -16,6 +16,6 @@ export class RegisterRequestDto {
   @IsNotEmpty()
   @IsAlphanumeric()
   phoneNumber: string;
-  @MinLength(10)
+  @MinLength(4)
   password: string;
 }

@@ -1,25 +1,33 @@
-import { Body, Controller, Post, Request, UseGuards } from "@nestjs/common";
-import { AuthentificationService } from "./authentification.service";
-import { AuthGuard } from "@nestjs/passport";
-import { AccessToken } from "src/types/AccessToken";
-import { RegisterRequestDto } from "./dtos/register.request.dto";
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthentificationService } from './authentification.service';
+import { AccessRefreshToken } from 'src/types/AccessRefreshToken';
+import { RegisterRequestDto } from './dtos/register.request.dto';
+import { LocalGuard } from './guards/local.guard';
+import type { Request } from 'express';
+import { JwtGuard } from './guards/jwt.guard';
 
-@Controller("authentification")
+@Controller('authentification')
 export class AuthentificationController {
   constructor(
     private readonly authentificationService: AuthentificationService,
   ) {}
 
-  @UseGuards(AuthGuard("local"))
-  @Post("login")
-  async login(@Request() req): Promise<AccessToken> {
-    return this.authentificationService.login(req.user);
+  @UseGuards(LocalGuard)
+  @Post('login')
+  async login(@Req() req: Request): Promise<any> {
+    return req.user;
   }
 
-  @Post("register")
+  @Get('profile')
+  @UseGuards(JwtGuard)
+  async profile() {
+    return 'this is your profile';
+  }
+
+  @Post('register')
   async register(
     @Body() registerBody: RegisterRequestDto,
-  ): Promise<AccessToken> {
+  ): Promise<AccessRefreshToken> {
     return await this.authentificationService.register(registerBody);
   }
 }
