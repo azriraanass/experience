@@ -5,5 +5,5 @@ import { typeOrmConfig } from './typeorm.config';
 export default new DataSource(
   {
     ...typeOrmConfig(),
-    migrations: [__dirname + '/database/migrations/*.ts'],
+    migrations: [__dirname + '/../migrations/*.ts'],
   });

@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './database/config/typeorm.config';
 import { UsersModule } from './users/users.module';
 import { AuthentificationModule } from './authentification/authentification.module';
-import { BlacklistModule } from './blacklist/blacklist.module';
 
 
 
@@ -20,7 +19,6 @@ import { BlacklistModule } from './blacklist/blacklist.module';
     TypeOrmModule.forRoot(typeOrmConfig()),
     UsersModule,
     AuthentificationModule,
-    BlacklistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,7 +5,7 @@ import { CreateDateColumn } from 'typeorm';
 export class BlackList {
   @PrimaryGeneratedColumn('increment')
   id: number;
-  @Column()
+  @Column({ unique: true })
   token: string;
   @CreateDateColumn({ nullable: false, type: 'timestamptz' })
   expiredAt: Date;

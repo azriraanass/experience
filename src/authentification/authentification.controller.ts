@@ -21,7 +21,7 @@ export class AuthentificationController {
   @Get('profile')
   @UseGuards(JwtGuard)
   async profile() {
-    return 'this is your profile';
+    return 'this is your profile your jwt token is valid';
   }
 
   @Post('register')
@@ -29,5 +29,17 @@ export class AuthentificationController {
     @Body() registerBody: RegisterRequestDto,
   ): Promise<AccessRefreshToken> {
     return await this.authentificationService.register(registerBody);
+  }
+
+  @Post('logout')
+  @UseGuards(JwtGuard)
+  logout(@Req() req: Request) {
+    /**
+     * Ici The req.headers.authorization! tell ts compilator
+     * that authorization wouldn't be undif
+     */
+    const token: string = req.headers.authorization!.split(' ')[1];
+    console.log(token);
+    this.authentificationService.logout(token);
   }
 }

@@ -3,7 +3,7 @@ import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Post } from "./entities/posts.entity";
+import { Post } from "./entities/post.entity";
 import { DeleteResult } from "typeorm";
 
 export class PostsService {

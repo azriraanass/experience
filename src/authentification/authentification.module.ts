@@ -6,6 +6,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BlackList } from './entities/blacklist.entity';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       },
     }),
     PassportModule,
+    TypeOrmModule.forFeature([BlackList]),
   ],
   controllers: [AuthentificationController],
   providers: [AuthentificationService, LocalStrategy, JwtStrategy],

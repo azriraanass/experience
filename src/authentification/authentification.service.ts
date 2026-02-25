@@ -9,12 +9,17 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { AccessRefreshToken } from 'src/types/AccessRefreshToken';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BlackList } from './entities/blacklist.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthentificationService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    @InjectRepository(BlackList)
+    private readonly blackListRepository: Repository<BlackList>,
   ) {}
 
   async validateUser(
@@ -47,5 +52,28 @@ export class AuthentificationService {
       status: 201,
       user: user,
     };
+  }
+
+  async logout(token: string) {
+    const tokenDecoded = this.jwtService.decode(token);
+
+    if (tokenDecoded?.exp === null)
+      throw new UnauthorizedException('Token invalid');
+
+    const expiredAt = new Date(tokenDecoded.exp * 1000);
+    console.log(token);
+
+    if ((await this.isInBlackList(token)) !== true) {
+      
+      this.blackListRepository.save({ token, expiredAt });
+      console.log(token);
+    }
+  }
+
+  async isInBlackList(token: string): Promise<boolean> {
+    return (await this.blackListRepository.findOne({ where: { token } })) ==
+      null
+      ? false
+      : true;
   }
 }
